@@ -1,0 +1,7 @@
+npx sequelize model:generate --name User --attributes username:string,email:string,password:string
+User: username, email, password
+
+Room: ownerID:integer, date:date, playerOneId:integer, playerTwoId:integer, playerOneScore:integer, playerTwoScore:integer
+    ownerID = playerOne user id
+    player..Id = designated user Id
+    result will be based on 
