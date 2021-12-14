@@ -1,10 +1,5 @@
 const { User } = require('../models')
 
-//include passport
-const passport = require('../lib/passport')
-
-const bcrypt = require('bcrypt');
-
 
 module.exports = {
     registerPost: (req, res, next) => {
@@ -14,18 +9,28 @@ module.exports = {
             })
             .catch(err => next(err));
     },
-    formRegister: (req, res, next) => {
-        res.render('users/register');
+
+    userRegister: (req, res, next) => {
+        User.register(req.body)
     },
 
+    userLogin: async(req, res) => {
+        User.authenticate(req.body)
+            .then(user => {
+                res.json({
+                    id: user.id, 
+                    username: user.username, 
+                    accessToken: user.generateToken()
+                })
+                console.log("login: " + req.user)
+            }).catch(err => {
+                res.json(err);
+                console.log("ERRORR: " + err)
+            })
+    },
 
-    loginPost: passport.authenticate('local', {
-        successRedirect: '/users',
-        failureRedirect: '/login',
-        failureFlash: true // untuk mengaktifkan express flash
-    }),
-
-    formLogin: (req, res, next) => {
-        res.render('users/login')
+    me: (req, res) => {
+        res.json(req.user)
+        console.log(req.user)
     }
 }
