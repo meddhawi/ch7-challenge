@@ -1,8 +1,7 @@
 const { Room } = require('../models')
 const sequelize = require('sequelize')
 const express = require('express')
-const { IGNORE } = require('sequelize/dist/lib/index-hints')
-
+const room = require('../models/room')
 module.exports = {
     showRoomList: (req, res) => {
         Room.findAll()
@@ -12,7 +11,7 @@ module.exports = {
     },
 
     createRoom: async (req, res) =>{
-        await Room.create({ownerID: req.user.id})
+        await Room.create({playerOneId: req.user.id})
             .then((room)=>{res.json(room)})
     },
 
@@ -56,5 +55,51 @@ module.exports = {
             result = "Player 2 Win!"
         }
     },
+
+    fight: async (req, res) => {
+        const{ playerOneMove, playerTwoMove } = req.body
+        //if function to determine which is player one and two
+        Room.findOne({where: {id: req.params.id}})
+            .then((result) =>{
+                let playerOneId = result.dataValues.playerOneId
+                let playerOneMoveDB = result.dataValues.playerOneMove
+                let playerTwoMoveDB = result.dataValues.playerTwoMove
+                //if this is not player one
+                if(req.user.id !== playerOneId){
+                    if(playerTwoMoveDB === null || playerTwoMoveDB.length < 3){
+                        Room.update(
+                            {
+                                playerTwoId: req.user.id,
+                                playerTwoMove: sequelize.fn('array_append', sequelize.col('playerTwoMove'), playerTwoMove)
+                            },
+                            {where: {id: req.params.id}, returning: true}
+                        ).then((update)=>{
+                            res.status(200).json(update)
+                        }) .catch((err) => {
+                            console.log(err);
+                          });
+                    }
+                }
+                //if this is player one
+                else if (req.user.id === playerOneId){
+                    if(playerOneMoveDB === null || playerOneMoveDB.length < 3){
+                        Room.update(
+                            {
+                                playerOneMove: sequelize.fn('array_append', sequelize.col('playerOneMove'), playerOneMove)
+                            },
+                            {where: {id: req.params.id}, returning: true}
+                        ).then((update)=>{
+                            res.status(200).json(update)
+                        }) .catch((err) => {
+                            console.log(err);
+                          });                            
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+              });
+        
+    }
 
 }
