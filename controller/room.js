@@ -1,7 +1,7 @@
 const { Room } = require('../models')
+const utils = require('../utils/utils')
 const sequelize = require('sequelize')
 const express = require('express')
-const room = require('../models/room')
 module.exports = {
     showRoomList: (req, res) => {
         Room.findAll()
@@ -21,39 +21,47 @@ module.exports = {
         })
     },
 
-    getWinner: (player1, player2) => { //if false p1 lose and p2 win, if true p1 win and p2 lose
-        if(player1 === player2){
-            return "draw";
-        }else if(player1 === "rock"){
-            if (player2 === "paper") {
-                return false;
-            } else {
-                return true;
-            }
-        }else if(player1 ==="paper"){
-            if (player2 === "scissor") {
-                return false;
-            } else {
-                return true;
-            }
-        }else if(player1 === "scissor"){
-            if (player2 === "rock") {
-                return false;
-            } else {
-                return true;
-            }
+    roundResult: () =>{
+        var getWinner = (result) =>{
+            Room.update(
+                {
+                    roundResult: sequelize.fn('array_append', sequelize.col('roundResult'), result)
+                },
+                {where: {id: req.params.id}, returning: true}
+            )  
         }
-    },
-
-    roundResult: (result) =>{
-        if(this.getWinner == "draw"){
-            result = "Draw!"
-        }
-        else if(this.getWinner){
-            result = "Player 1 win!"
-        }else{
-            result = "Player 2 Win!"
-        }
+        Room.findOne({where: {id: req.params.id}})
+            .then((result)=>{
+                let playerOne = result.dataValues.playerOneMove;
+                let playerTwo = result.dataValues.playerTwoMove;
+                for (var i = 0; i < 3; i++){
+                    if(playerOne[i] === playerTwo[i]){
+                        getWinner("Draw");
+                    }else if(playerOne[i] === "rock"){
+                        if (playerTwo[i] === "paper") {
+                            getWinner("Player 2 Win!");                            
+                        } else {
+                            getWinner("Player 1 Win!");
+                        }
+                    }else if(playerOne[i] ==="paper"){
+                        if (playerTwo[i] === "scissor") {
+                            getWinner("Player 2 Win!");                            
+                        } else {
+                            getWinner("Player 1 Win!");
+                        }
+                    }else if(playerOne[i] === "scissor"){
+                        if (playerTwo[i] === "rock") {
+                            getWinner("Player 2 Win!");                            
+                        } else {
+                            getWinner("Player 1 Win!");
+                        }
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+              });
+        
     },
 
     fight: async (req, res) => {
