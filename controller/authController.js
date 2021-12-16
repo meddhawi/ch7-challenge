@@ -1,4 +1,5 @@
 const { User } = require('../models')
+const sequelize = require('sequelize')
 
 
 module.exports = {
@@ -21,16 +22,15 @@ module.exports = {
                     id: user.id, 
                     username: user.username, 
                     accessToken: user.generateToken()
-                })
-                console.log("login: " + req.user)
+                });
             }).catch(err => {
                 res.json(err);
-                console.log("ERRORR: " + err)
+                console.log("ERROR: " + err)
             })
     },
 
     me: (req, res) => {
         res.json(req.user)
-        console.log(req.user)
+        console.log(req.user.id)
     }
 }

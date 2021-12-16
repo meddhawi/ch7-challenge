@@ -13,7 +13,8 @@ router.post('/login', auth.userLogin);
 // Get user details
 router.get('/me', restrict, auth.me);
 
-// router.get('/register', (req, res) => res.render('users/register'))
+//game join
+
 
 
 
