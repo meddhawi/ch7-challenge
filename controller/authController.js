@@ -13,6 +13,10 @@ module.exports = {
 
     userRegister: (req, res, next) => {
         User.register(req.body)
+            .then(result => res.json("Registered!"))
+            .catch(err => {
+                res.json(err)
+            })
     },
 
     userLogin: async(req, res) => {

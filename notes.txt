@@ -5,6 +5,8 @@ npx sequelize model:generate --name Room --attributes ownerID:integer,date:date,
 
 
 npx sequelize model:generate --name Room --attributes playerOneId:integer,playerTwoId:integer,playerOneMove:array:string,playerTwoMove:array:string,roundResult:array:string
+npx sequelize migration:generate --name add-role 
+
 
 Room: ownerID:integer, date:date, playerOneId:integer, playerTwoId:integer, playerOneMove:array
     idPlayer1:integer, idPlayer2: integer, 

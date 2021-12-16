@@ -22,11 +22,16 @@ module.exports = (sequelize, DataTypes) => {
         static encrypt(password) {
           return bcrypt.hashSync(password, 10);
         }
-      
+        
+    
+
         // method untuk melakukan registrasi
-        static register = ({ username, password }) => {
+        static register = async ({ username, password, email, role }) => {
+          const user = await this.findOne({ where: { username }})
+          if(user) return Promise.reject("User existed");
+          role = "PlayerUser";
           const encryptedPassword = this.encrypt(password);
-          return this.create({ username, password: encryptedPassword });
+          return this.create({ username, password: encryptedPassword, email, role });
         }
     
         // Method checkPassword
@@ -60,7 +65,8 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     username: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    role: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',
