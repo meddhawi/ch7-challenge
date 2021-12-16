@@ -1,5 +1,4 @@
 const { Room } = require('../models')
-const utils = require('../utils/utils')
 const sequelize = require('sequelize')
 const express = require('express')
 module.exports = {
@@ -62,6 +61,14 @@ module.exports = {
                 console.log(err);
               });
         
+    },
+
+    getResult : async (req, res) => {
+        Room.findOne({where: {id: req.params.id}})
+            .then((result) =>{
+                let round = result.dataValues.roundResult
+                res.json(round)
+            })
     },
 
     fight: async (req, res) => {

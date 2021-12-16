@@ -17,6 +17,7 @@ router.get('/me', restrict, auth.me);
 //game 
 router.post('/create', restrict, room.createRoom)
 router.post('/fight/:id', restrict, room.fight)
+router.get('/result/:id', room.getResult)
 
 
 
