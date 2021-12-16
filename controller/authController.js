@@ -33,8 +33,19 @@ module.exports = {
             })
     },
 
-    me: (req, res) => {
+    me: (req, res, next) => {
         res.json(req.user)
-        console.log(req.user.id)
-    }
+        console.log(req.user.role + typeof req.user.role)
+    },
+
+    playerUser: (req, res, next) => {
+        // console.log(req.user)
+        if (req.user.role === "PlayerUser") {
+          next();
+        } else {
+          res.status(401).json({
+            message: 'you are not authorize to access this endpoint',
+          });
+        }
+      }
 }

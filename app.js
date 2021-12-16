@@ -13,6 +13,7 @@ const app = express()
 var usersRouter = require('./routes/users')
 var apiRouter = require('./routes/api')
 
+
 // Setting template engine EJS
 app.set('view engine', 'ejs')
 
@@ -43,6 +44,7 @@ app.use(passport.initialize())
 //routes
 app.use('/', usersRouter)
 app.use('/api', apiRouter)
+
 
 
 
