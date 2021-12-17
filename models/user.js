@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.UserBiodata, {foreignKey: 'user_id'});
+      User.hasMany(models.UserHistory, {foreignKey: 'user_id'});
     }
     
         // method untuk melakukan enkripsi

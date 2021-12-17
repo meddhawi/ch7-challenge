@@ -1,5 +1,5 @@
 //Models here
-const { Users, UserBiodata, UserHistory } = require('../models')
+const { User, UserBiodata, UserHistory } = require('../models')
 const Sequelize = require('sequelize')
 
 module.exports= {
@@ -25,8 +25,23 @@ module.exports= {
         }
     },
 
-    //update method here
+    user_info: async (req, res) =>{
+        try {
+            const{ username, email, password } = req.body;
+            User.authenticate({username, password})
+                .then(result =>{
+                    getID = result.dataValues.id
+                    var list = UserBiodata.findOne({where:{
+                        user_id: getID
+                    }})
+                    res.render()
+                })
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
+    //update method here
     updateInfo: async(req, res) =>{
         try{
             //Taking login method
@@ -38,17 +53,17 @@ module.exports= {
                 username,
                 description
             } = req.body
-            // console.log(`input: ${email}, Password: ${password}`)
-            const userFind = await Users.findOne({
+            
+            const userFind = await User.findOne({
                 where: {
                     email: emailPrev,
                     password: passwordPrev
                 }
             })
-            // console.log(userFind)
+            
             if (userFind) {
                 //Update username, email, password
-                await Users.update({
+                await User.update({
                     username: username,
                     email: emailNext,
                     password: passwordNext
@@ -87,7 +102,7 @@ module.exports= {
                 password,
             } = req.body
             // console.log(`input: ${email}, Password: ${password}`)
-            const userFind = await Users.findOne({
+            const userFind = await User.findOne({
                 where: {
                     email: email,
                     password: password
@@ -95,7 +110,7 @@ module.exports= {
             })
             if (userFind) {
                 //Delete username, email, password
-                await Users.destroy({
+                await User.destroy({
                     where: {
                       id: userFind.id
                     }
