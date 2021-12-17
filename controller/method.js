@@ -46,11 +46,11 @@ module.exports= {
         try{
             //Taking login method
             const {
+                username,
                 emailPrev,
                 passwordPrev,
                 emailNext,
                 passwordNext,
-                username,
                 description
             } = req.body
             
@@ -64,7 +64,6 @@ module.exports= {
             if (userFind) {
                 //Update username, email, password
                 await User.update({
-                    username: username,
                     email: emailNext,
                     password: passwordNext
                 },{
@@ -74,7 +73,6 @@ module.exports= {
                 })
                 //Update biodata
                 await UserBiodata.update({
-                    username: username,
                     description: description
                 },{
                     where: {
@@ -98,30 +96,40 @@ module.exports= {
         try{
         //Taking login method
             const {
-                email,
+                username,
                 password,
             } = req.body
             // console.log(`input: ${email}, Password: ${password}`)
-            const userFind = await User.findOne({
-                where: {
-                    email: email,
-                    password: password
-                }
-            })
-            if (userFind) {
-                //Delete username, email, password
-                await User.destroy({
-                    where: {
-                      id: userFind.id
-                    }
-                });
-                res.redirect('/')                                
-            } else {
-                res.status(404).json({
-                    message: "Email or Password is wrong"
+            User.authenticate({username, password})
+                .then(result =>{
+                     User.destroy({
+                        where: {
+                          id: result.id
+                        }
+                    });
+                    console.log(result.id)
+                }).catch(err =>{
+                    res.json(err);
+                    console.log(err);
                 })
-                console.log("Failed!")
-            } 
+                
+            // const userFind = await User.findOne({
+            //     where: {
+            //         username: username,
+            //         password: password
+            //     }
+            // })
+            // if (userFind) {
+            //     //Delete username, email, password
+            //     await User.destroy({
+            //         where: {
+            //           id: userFind.id
+            //         }
+            //     });
+            //     res.redirect('/')                                
+            // } else {
+                
+            // } 
         }catch(error){
             console.log(error);
         }
