@@ -21,7 +21,7 @@ router.get('/you', restrict, superAdmin, auth.me)
 
 //Just admin things
 router.get('/user', restrict, superAdmin, admin.showDashAPI)
-router.get('/user/delete', restrict, superAdmin, admin.deleteUserAPI)
+router.post('/user/delete', restrict, superAdmin, admin.deleteUserAPI)
 
 
 

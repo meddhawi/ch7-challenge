@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
           const user = await this.findOne({ where: { username }})
           if(user) return Promise.reject("User existed");
           role = "PlayerUser";
+          // role = "SuperAdmin";
           const encryptedPassword = this.encrypt(password);
           return this.create({ username, password: encryptedPassword, email, role });
         }

@@ -18,7 +18,7 @@ module.exports = {
     showDashAPI: async (req, res) =>{
         try {
             await User.findAll()
-                        .then(result = res.json(result))
+                        .then(result => res.json(result))
         } catch (error) {
             console.log(error);
         }

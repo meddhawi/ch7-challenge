@@ -47,45 +47,31 @@ module.exports= {
             //Taking login method
             const {
                 username,
-                emailPrev,
-                passwordPrev,
-                emailNext,
-                passwordNext,
+                password,
+                email,
                 description
             } = req.body
             
-            const userFind = await User.findOne({
-                where: {
-                    email: emailPrev,
-                    password: passwordPrev
-                }
-            })
-            
-            if (userFind) {
-                //Update username, email, password
-                await User.update({
-                    email: emailNext,
-                    password: passwordNext
-                },{
-                    where: {
-                      id: userFind.id
+            User.authenticate({username, password})
+                .then(result => {
+                    User.update({
+                        email
+                    }),{
+                        where:{
+                            id: result.id
+                        }
                     }
-                })
-                //Update biodata
-                await UserBiodata.update({
-                    description: description
-                },{
-                    where: {
-                      user_id: userFind.id
-                    }
-                })
-                res.redirect('/')                                
-            } else {
-                res.status(404).json({
-                    message: "Email or Password is wrong"
-                })
-                console.log("Failed!")
-            }            
+                    UserBiodata.update({
+                        description
+                    },{
+                        where:{
+                            user_id: result.id
+                        }
+                    }).
+                    res.json('Updated')
+
+                }).catch(err => res.json(err))
+                       
 
         }catch(error){
             console.log(error);
