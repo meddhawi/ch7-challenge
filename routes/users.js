@@ -19,8 +19,8 @@ router.post('/register', auth.registerPostNonAPI)
 router.get('/login', (req, res) => res.render('login'))
 router.post('/login', auth.userLogin)
 
-router.get('/admin/user', admin.showDash)
-router.post('/admin/user/delete', admin.deleteUser)
+// router.get('/admin/user', admin.showDash)
+// router.post('/admin/user/delete', admin.deleteUser)
 //Read Method here
 router.get('/user_list', method.user_list)
 
