@@ -17,7 +17,7 @@ router.post('/login', auth.userLogin);
 router.get('/me', restrict, auth.me);
 router.get('/user_history', restrict, auth.userHistoryAPI)
 router.get('/user_info', restrict, auth.user_info)
-router.get('/you', restrict, superAdmin, auth.me)
+
 
 //Just admin things
 router.get('/user', restrict, superAdmin, admin.showDashAPI)

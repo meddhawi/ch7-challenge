@@ -9,9 +9,17 @@ const auth = require('../controller/authController');
 const method = require('../controller/method')
 const admin = require('../controller/admin')
 
-router.get('/' ,(req, res) => {
-    // res.status(200).json({'message': "HALLO"})
+router.get('/', async (req, res) => {
+    res.render('homepage')
+},)
+
+//GAMEPLAY
+router.get('/game', async (req, res) =>{
+    res.render('game', {
+        username: req.query.username || 'PLAYER 1'
+    })
 })
+
 
 router.get('/register', (req, res) => res.render('register'))
 router.post('/register', auth.registerPostNonAPI)

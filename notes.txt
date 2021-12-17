@@ -2,7 +2,7 @@ npx sequelize model:generate --name User --attributes username:string,email:stri
 User: username, email, password
 
 npx sequelize model:generate --name Room --attributes ownerID:integer,date:date,playerOneId:integer,playerTwoId:integer,playerOneScore:integer,playerTwoScore:integer
-
+npx sequelize-cli seed:generate --name UserAdmin
 
 npx sequelize model:generate --name Room --attributes playerOneId:integer,playerTwoId:integer,playerOneMove:array:string,playerTwoMove:array:string,roundResult:array:string
 npx sequelize migration:generate --name add-role 
