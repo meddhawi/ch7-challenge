@@ -8,7 +8,7 @@ const superAdmin = require('../middlewares/SuperAdmin')
 const auth = require('../controller/authController');
 const room = require('../controller/room')
 
-router.post('/register', auth.userRegister)
+router.post('/register', auth.registerPost)
 router.post('/login', auth.userLogin);
 
 // Get user details

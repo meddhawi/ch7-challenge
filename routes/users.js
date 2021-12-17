@@ -6,17 +6,28 @@ const superAdmin = require('../middlewares/SuperAdmin')
 
 // Controllers
 const auth = require('../controller/authController');
+const method = require('../controller/method')
 
 router.get('/' ,(req, res) => {
     // res.status(200).json({'message': "HALLO"})
 })
 
 router.get('/register', (req, res) => res.render('register'))
-router.post('/register', auth.registerPost)
+router.post('/register', auth.registerPostNonAPI)
 
 router.get('/login', (req, res) => res.render('login'))
 router.post('/login', auth.userLogin)
 
+//Read Method here
+router.get('/user_list', method.user_list)
+
+//Update Method here
+router.get('/user_update', method.updateGet)
+router.post('/user_update', method.updateInfo) 
+
+//Delete Method here
+router.get('/user_delete', method.deleteGet)
+router.post('/user_delete', method.deleteDestroy)
 
 
 module.exports = router;

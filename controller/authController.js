@@ -1,19 +1,29 @@
-const { User } = require('../models')
+const { User, UserBiodata } = require('../models')
 const sequelize = require('sequelize')
 
 
 module.exports = {
-    registerPost: (req, res, next) => {
+    registerPostNonAPI: (req, res, next) => {
         User.register(req.body)
-            .then(() => {
+            .then((result) => {
+                UserBiodata.create({
+                    name: result.username,
+                    user_id: result.id
+                });
                 res.redirect('/login')
             })
             .catch(err => next(err));
     },
 
-    userRegister: (req, res, next) => {
+    registerPost: (req, res, next) => {
         User.register(req.body)
-            .then(result => res.json("Registered!"))
+            .then(result => {
+                UserBiodata.create({
+                    name: result.username,
+                    user_id: result.id
+                });
+                res.json("Registered!");
+            })
             .catch(err => {
                 res.json(err)
             })
