@@ -17,7 +17,6 @@ router.post('/register', auth.registerPost)
 router.get('/login', (req, res) => res.render('login'))
 router.post('/login', auth.userLogin)
 
-router.get('/me', restrict, auth.me)
 
 
 module.exports = router;
