@@ -36,5 +36,10 @@ npm start
 8. localhost:8000/api/user_info → see your biodata
 
 ### Endpoint list(FullStack(no auth)):
+1. To play the game click Play Now on the homepage (localhost:8000/)
+2. To register click Register on the Navbar (localhost:8000/register)
+3. To change your biodata → click login → click change your information (localhost:8000/user_update)
+4. To delete your account → from change your information → delete your account(localhost:8000/user_delete)
+5. To see the other player go to (localhost:8000/user_list)
 
 ****
