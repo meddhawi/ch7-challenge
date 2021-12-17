@@ -1,4 +1,4 @@
-# Binar Chapter 6 Challenge: Database
+# Binar Chapter 7 Challenge
 
 ## Follow these codes to run
 
